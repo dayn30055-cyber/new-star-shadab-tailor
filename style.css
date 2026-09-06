@@ -80,17 +80,17 @@ footer{padding:52px 6%;background:#050607;border-top-color:rgba(215,173,88,.16)}
 
 /* Service photography */
 #services .cards article{padding:0;min-height:0;display:flex;flex-direction:column}
-.service-media{position:relative;margin:0;aspect-ratio:16/10;overflow:hidden;background:#090b0d;border-bottom:1px solid rgba(255,255,255,.1)}
+.service-media{position:relative;margin:0;aspect-ratio:auto;overflow:hidden;background:#090b0d;border-bottom:1px solid rgba(255,255,255,.1)}
 .service-media:after{content:"";position:absolute;inset:0;background:linear-gradient(180deg,transparent 54%,rgba(5,6,8,.56));pointer-events:none}
-.service-media img{display:block;width:100%;height:100%;object-fit:cover;transition:transform .65s cubic-bezier(.2,.7,.2,1),filter .4s ease;filter:saturate(.9) contrast(1.04)}
-#services .cards article:hover .service-media img{transform:scale(1.055);filter:saturate(1) contrast(1.07)}
+.service-media img{display:block;width:100%;height:auto;object-fit:contain;object-position:center;transition:filter .4s ease;filter:saturate(.9) contrast(1.04)}
+#services .cards article:hover .service-media img{filter:saturate(1) contrast(1.07)}
 .service-body{position:relative;display:flex;flex:1;flex-direction:column;padding:22px 22px 20px}
 .service-body .service-top{top:21px;right:20px}
 .service-body h3{padding-right:58px;margin:0 0 7px;font-family:var(--serif);font-size:25px;font-weight:600}
 .service-body p{max-width:none;min-height:44px}
 .service-body em{align-self:flex-start;margin-top:auto}
 .featured-service .service-media{border-bottom-color:rgba(215,173,88,.32)}
-@media(max-width:650px){.service-body{padding:19px 18px 18px}.service-body .service-top{top:18px;right:17px}.service-body h3{font-size:23px}.service-body p{min-height:0}.service-media{aspect-ratio:16/9}}
+@media(max-width:650px){.service-body{padding:19px 18px 18px}.service-body .service-top{top:18px;right:17px}.service-body h3{font-size:23px}.service-body p{min-height:0}.service-media{aspect-ratio:auto}}
 
 /* Pro appointment system */
 .slot-help{display:flex;justify-content:space-between;gap:12px;align-items:center;margin-top:8px;color:#888;font-size:12px}.slot-status{font-weight:800}.slot-status.available{color:#7bd88f}.slot-status.busy{color:#e6a95b}.booking-result{display:none;margin-top:22px;padding:20px;border:1px solid #3b3f45;border-radius:12px;background:#0b0d10}.booking-result.show{display:block}.booking-result h3{color:#d6a84f;margin-bottom:8px}.booking-id{font-family:monospace;font-size:18px;letter-spacing:1px}.result-actions{display:flex;gap:10px;flex-wrap:wrap;margin-top:15px}.result-actions a,.result-actions button{border:1px solid #3b3f45;background:transparent;color:#fff;padding:10px 14px;border-radius:7px;text-decoration:none;font-weight:700;cursor:pointer}.result-actions .primary{background:#d6a84f;color:#111;border-color:#d6a84f}
