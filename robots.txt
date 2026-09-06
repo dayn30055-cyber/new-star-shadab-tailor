@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://dyesh02-maker.github.io/new-star-shadab-tailor/sitemap.xml
