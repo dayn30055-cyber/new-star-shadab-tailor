@@ -2,8 +2,16 @@ document.getElementById("year").textContent = new Date().getFullYear();
 
 const menuBtn = document.getElementById("menuBtn");
 const nav = document.getElementById("nav");
-menuBtn.addEventListener("click", () => nav.classList.toggle("open"));
-document.querySelectorAll("#nav a").forEach(a => a.addEventListener("click", () => nav.classList.remove("open")));
+menuBtn.addEventListener("click", () => {
+  const isOpen = nav.classList.toggle("open");
+  menuBtn.setAttribute("aria-expanded", String(isOpen));
+  menuBtn.textContent = isOpen ? "×" : "☰";
+});
+document.querySelectorAll("#nav a").forEach(a => a.addEventListener("click", () => {
+  nav.classList.remove("open");
+  menuBtn.setAttribute("aria-expanded", "false");
+  menuBtn.textContent = "☰";
+}));
 
 const appointmentForm = document.getElementById("appointmentForm");
 const appointmentDate = document.getElementById("appointmentDate");
