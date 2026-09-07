@@ -1,0 +1,29 @@
+/* Header + hero polish requested 2026-09-07 */
+.brand{gap:16px!important}
+.brand>span{width:48px!important;height:48px!important;font-size:24px!important;border-color:rgba(216,179,101,.42)!important;box-shadow:0 0 0 4px rgba(216,179,101,.035),inset 0 1px 0 rgba(255,255,255,.09)!important}
+.brand-name{min-width:max-content!important}
+.brand-name span{font-size:11px!important;letter-spacing:6.6px!important;color:#b9b2a2!important;font-weight:800!important}
+.brand-name b{font-size:29px!important;letter-spacing:3.8px!important;line-height:1!important;text-shadow:0 7px 28px rgba(216,179,101,.14)!important;background:linear-gradient(90deg,#fff8e8 0%,#f1d38a 46%,#fff7e4 72%,#cfa953 100%)!important;background-size:220% auto!important}
+.brand-name:after{width:86px!important;bottom:-9px!important;box-shadow:0 0 12px rgba(216,179,101,.22)!important}
+
+.quick span{font-weight:800!important;color:#d5d8dc!important;border-color:rgba(216,179,101,.22)!important;background:linear-gradient(180deg,rgba(216,179,101,.065),rgba(255,255,255,.018))!important;box-shadow:inset 0 1px 0 rgba(255,255,255,.04)!important;letter-spacing:.15px!important}
+
+/* Clean storefront crop: hides roof bricks and lower parked bikes in hero only */
+.hero-photo{overflow:hidden!important;padding:10px!important}
+.hero-photo:after{display:none!important}
+.hero-photo img{width:100%!important;height:520px!important;object-fit:cover!important;object-position:50% 46%!important;transform:scale(1.16)!important;transform-origin:center 46%!important;border-radius:20px 90px 20px 90px!important}
+
+@media(max-width:1280px){
+  .brand-name b{font-size:25px!important}.brand-name span{font-size:10px!important;letter-spacing:5.8px!important}
+  .hero-photo img{height:470px!important;transform:scale(1.17)!important}
+}
+@media(max-width:820px){
+  .brand{gap:11px!important}.brand>span{width:40px!important;height:40px!important;font-size:20px!important}
+  .brand-name span{font-size:8px!important;letter-spacing:4.4px!important}.brand-name b{font-size:20px!important;letter-spacing:2.7px!important}
+  .hero-photo img{height:410px!important;transform:scale(1.14)!important;object-position:50% 45%!important}
+}
+@media(max-width:560px){
+  .brand-name span{font-size:7px!important;letter-spacing:3.3px!important}.brand-name b{font-size:16px!important;letter-spacing:2px!important}
+  .quick span{font-size:12px!important;padding:11px 13px!important}
+  .hero-photo img{height:300px!important;transform:scale(1.13)!important;object-position:50% 45%!important;border-radius:12px 46px 12px 46px!important}
+}
