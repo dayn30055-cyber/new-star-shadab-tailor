@@ -18,225 +18,102 @@ import android.widget.LinearLayout;
 import android.widget.ScrollView;
 import android.widget.TextView;
 import android.widget.Toast;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.Locale;
 
 public class MainActivity extends Activity {
-    private LinearLayout root;
-    private LinearLayout content;
-    private LinearLayout nav;
+    private LinearLayout root, content, nav;
     private SharedPreferences prefs;
+    private final int BG=Color.rgb(8,12,18), CARD=Color.rgb(18,24,32), CARD2=Color.rgb(24,31,41), GOLD=Color.rgb(212,175,55), TEXT=Color.rgb(245,247,250), MUTED=Color.rgb(158,168,181);
+    private final String PHONE="917565053878";
 
-    private final int BG = Color.rgb(8, 12, 18);
-    private final int CARD = Color.rgb(18, 24, 32);
-    private final int CARD2 = Color.rgb(24, 31, 41);
-    private final int GOLD = Color.rgb(212, 175, 55);
-    private final int TEXT = Color.rgb(245, 247, 250);
-    private final int MUTED = Color.rgb(158, 168, 181);
-    private final String PHONE = "917565053878";
-
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        prefs = getSharedPreferences("nsst", MODE_PRIVATE);
-        getWindow().setStatusBarColor(BG);
-        getWindow().setNavigationBarColor(BG);
-
-        root = new LinearLayout(this);
-        root.setOrientation(LinearLayout.VERTICAL);
-        root.setBackgroundColor(BG);
-
-        ScrollView scroll = new ScrollView(this);
-        scroll.setFillViewport(true);
-        content = new LinearLayout(this);
-        content.setOrientation(LinearLayout.VERTICAL);
-        content.setPadding(dp(18), dp(18), dp(18), dp(28));
-        scroll.addView(content, new ScrollView.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT));
-        root.addView(scroll, new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, 0, 1));
-
-        nav = new LinearLayout(this);
-        nav.setOrientation(LinearLayout.HORIZONTAL);
-        nav.setPadding(dp(8), dp(7), dp(8), dp(9));
-        nav.setBackgroundColor(Color.rgb(13, 18, 25));
-        root.addView(nav, new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT));
-
-        addNav("Home", "home");
-        addNav("Book", "book");
-        addNav("Orders", "orders");
-        addNav("Measure", "measure");
-        addNav("Profile", "profile");
-
-        setContentView(root);
-        showHome();
+    @Override public void onCreate(Bundle b){
+        super.onCreate(b); prefs=getSharedPreferences("nsst",MODE_PRIVATE);
+        getWindow().setStatusBarColor(BG); getWindow().setNavigationBarColor(BG);
+        root=new LinearLayout(this); root.setOrientation(LinearLayout.VERTICAL); root.setBackgroundColor(BG);
+        ScrollView scroll=new ScrollView(this); scroll.setFillViewport(true);
+        content=new LinearLayout(this); content.setOrientation(LinearLayout.VERTICAL); content.setPadding(dp(18),dp(18),dp(18),dp(28));
+        scroll.addView(content,new ScrollView.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,ViewGroup.LayoutParams.WRAP_CONTENT));
+        root.addView(scroll,new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,0,1));
+        nav=new LinearLayout(this); nav.setOrientation(LinearLayout.HORIZONTAL); nav.setPadding(dp(7),dp(6),dp(7),dp(8)); nav.setBackgroundColor(Color.rgb(13,18,25));
+        root.addView(nav,new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,ViewGroup.LayoutParams.WRAP_CONTENT));
+        addNav("Home","home"); addNav("Book","book"); addNav("Orders","orders"); addNav("Measure","measure"); addNav("More","more");
+        setContentView(root); showHome();
     }
 
-    private void addNav(String label, String page) {
-        Button b = new Button(this);
-        b.setText(label);
-        b.setTextSize(11);
-        b.setAllCaps(false);
-        b.setTextColor(TEXT);
-        b.setTypeface(Typeface.DEFAULT_BOLD);
-        b.setBackgroundColor(Color.TRANSPARENT);
-        b.setPadding(dp(4), dp(8), dp(4), dp(8));
-        b.setOnClickListener(v -> {
-            if (page.equals("home")) showHome();
-            else if (page.equals("book")) showBooking();
-            else if (page.equals("orders")) showOrders();
-            else if (page.equals("measure")) showMeasurements();
-            else showProfile();
-        });
-        nav.addView(b, new LinearLayout.LayoutParams(0, ViewGroup.LayoutParams.WRAP_CONTENT, 1));
+    private void addNav(String label,String page){
+        Button x=new Button(this); x.setText(label); x.setTextSize(11); x.setAllCaps(false); x.setTextColor(TEXT); x.setTypeface(Typeface.DEFAULT_BOLD); x.setBackgroundColor(Color.TRANSPARENT); x.setPadding(dp(2),dp(8),dp(2),dp(8));
+        x.setOnClickListener(v->{ if(page.equals("home"))showHome(); else if(page.equals("book"))showBooking(); else if(page.equals("orders"))showOrders(); else if(page.equals("measure"))showMeasurements(); else showMore(); });
+        nav.addView(x,new LinearLayout.LayoutParams(0,ViewGroup.LayoutParams.WRAP_CONTENT,1));
     }
 
-    private void clearContent() { content.removeAllViews(); }
+    private void clear(){ content.removeAllViews(); }
+    private void top(String title,String sub){ TextView m=text("NSST  •  NEW STAR SHADAB TAILOR",11,true,GOLD); m.setLetterSpacing(.12f); content.addView(m,margin(0,0,0,7)); content.addView(text(title,27,true,TEXT),match()); TextView s=text(sub,13,false,MUTED); s.setPadding(0,dp(4),0,dp(18)); content.addView(s,match()); }
 
-    private void topBrand(String pageTitle, String subtitle) {
-        TextView mini = text("NSST  •  NEW STAR SHADAB TAILOR", 11, true, GOLD);
-        mini.setLetterSpacing(0.12f);
-        content.addView(mini, matchWrapMargin(0, 0, 0, 7));
-        content.addView(text(pageTitle, 27, true, TEXT), matchWrap());
-        TextView sub = text(subtitle, 13, false, MUTED);
-        sub.setPadding(0, dp(4), 0, dp(18));
-        content.addView(sub, matchWrap());
+    private void showHome(){
+        clear(); top("Welcome to NSST","Your premium tailoring dashboard.");
+        LinearLayout hero=card(22); TextView tag=text("YOUR PERSONAL TAILORING HUB",11,true,GOLD); tag.setLetterSpacing(.14f); hero.addView(tag,match());
+        TextView h=text("Perfect fit.\nBetter experience.",28,true,TEXT); h.setPadding(0,dp(8),0,dp(8)); hero.addView(h,match());
+        hero.addView(text("Book stitching, save measurements, manage order history and contact the shop from one app.",14,false,MUTED),margin(0,0,0,15));
+        Button book=button("Book New Stitching",true); book.setOnClickListener(v->showBooking()); hero.addView(book,match()); content.addView(hero,margin(0,0,0,18));
+        section("Quick Actions","Fast access to the most useful NSST tools.");
+        LinearLayout a=new LinearLayout(this); a.setOrientation(LinearLayout.HORIZONTAL); a.addView(quick("My Orders","Order history",v->showOrders()),weight(1,0,0,6,0)); a.addView(quick("Price List","View services",v->showPriceList()),weight(1,6,0,0,0)); content.addView(a,margin(0,0,0,12));
+        LinearLayout b=new LinearLayout(this); b.setOrientation(LinearLayout.HORIZONTAL); b.addView(quick("Gallery","Browse styles",v->showGallery()),weight(1,0,0,6,0)); b.addView(quick("Measurements","Saved sizes",v->showMeasurements()),weight(1,6,0,0,0)); content.addView(b,margin(0,0,0,12));
+        LinearLayout c=new LinearLayout(this); c.setOrientation(LinearLayout.HORIZONTAL); c.addView(quick("WhatsApp","Chat now",v->openWhatsApp("Assalamualaikum, mujhe NSST tailoring service ke baare me jankari chahiye.")),weight(1,0,0,6,0)); c.addView(quick("Call","Talk to shop",v->startActivity(new Intent(Intent.ACTION_DIAL,Uri.parse("tel:+"+PHONE)))),weight(1,6,0,0,0)); content.addView(c,margin(0,0,0,20));
+        section("Popular Services","Craftsmanship for every occasion."); service("Shirt Stitching","Clean collar, balanced shoulder and premium fitting."); service("Pant Stitching","Sharp fall and tailored comfort."); service("Suit & Blazer","Structured premium occasion tailoring."); service("Kurta & Traditional","Elegant festive and formal fitting."); service("Alteration","Accurate fitting corrections and finishing.");
     }
 
-    private void showHome() {
-        clearContent();
-        topBrand("Welcome to NSST", "Premium tailoring, now easier to manage from your phone.");
-
-        LinearLayout hero = card(22);
-        TextView tag = text("YOUR PERSONAL TAILORING HUB", 11, true, GOLD);
-        tag.setLetterSpacing(0.14f);
-        hero.addView(tag, matchWrap());
-        TextView h = text("Perfect fit.\nOne tap away.", 28, true, TEXT);
-        h.setPadding(0, dp(8), 0, dp(8));
-        hero.addView(h, matchWrap());
-        hero.addView(text("Book stitching, save measurements, check orders and contact the shop from one place.", 14, false, MUTED), matchWrapMargin(0, 0, 0, 15));
-        Button book = actionButton("Book New Stitching", true);
-        book.setOnClickListener(v -> showBooking());
-        hero.addView(book, matchWrap());
-        content.addView(hero, matchWrapMargin(0, 0, 0, 18));
-
-        section("Quick Actions", "Everything you need, right here.");
-        LinearLayout row1 = new LinearLayout(this); row1.setOrientation(LinearLayout.HORIZONTAL);
-        row1.addView(quickCard("My Orders", "Track status", v -> showOrders()), weightMargin(1,0,0,6,0));
-        row1.addView(quickCard("Measurements", "Saved sizes", v -> showMeasurements()), weightMargin(1,6,0,0,0));
-        content.addView(row1, matchWrapMargin(0,0,0,12));
-        LinearLayout row2 = new LinearLayout(this); row2.setOrientation(LinearLayout.HORIZONTAL);
-        row2.addView(quickCard("WhatsApp", "Chat now", v -> openWhatsApp("Assalamualaikum, mujhe NSST tailoring service ke baare me jankari chahiye.")), weightMargin(1,0,0,6,0));
-        row2.addView(quickCard("Call", "Talk to shop", v -> startActivity(new Intent(Intent.ACTION_DIAL, Uri.parse("tel:+" + PHONE)))), weightMargin(1,6,0,0,0));
-        content.addView(row2, matchWrapMargin(0,0,0,20));
-
-        section("Popular Services", "Craftsmanship for every occasion.");
-        service("Shirt Stitching", "Clean collar, balanced shoulder and premium fitting.");
-        service("Pant Stitching", "Sharp fall and tailored comfort.");
-        service("Suit & Blazer", "Structured premium occasion tailoring.");
-        service("Kurta & Traditional", "Elegant festive and formal fitting.");
-        service("Alteration", "Accurate fitting corrections and finishing.");
+    private void showBooking(){
+        clear(); top("Book Stitching","Create a booking and send it directly to NSST on WhatsApp.");
+        EditText name=input("Your name",InputType.TYPE_CLASS_TEXT), phone=input("Phone number",InputType.TYPE_CLASS_PHONE), service=input("Service — Shirt, Pant, Suit, Kurta...",InputType.TYPE_CLASS_TEXT), date=input("Preferred delivery date",InputType.TYPE_CLASS_TEXT), note=input("Notes / fitting preference",InputType.TYPE_CLASS_TEXT);
+        name.setText(prefs.getString("profile_name","")); phone.setText(prefs.getString("profile_phone",""));
+        content.addView(name,field()); content.addView(phone,field()); content.addView(service,field()); content.addView(date,field()); content.addView(note,margin(0,0,0,14));
+        Button send=button("Save & Send Booking on WhatsApp",true); send.setOnClickListener(v->{ String n=name.getText().toString().trim(),p=phone.getText().toString().trim(),s=service.getText().toString().trim(),d=date.getText().toString().trim(),no=note.getText().toString().trim(); if(n.isEmpty()||p.isEmpty()||s.isEmpty()){Toast.makeText(this,"Please fill name, phone and service.",Toast.LENGTH_SHORT).show();return;} addOrder(s,d,"Booking Requested"); String msg="Assalamualaikum NSST, mujhe stitching booking karni hai.\n\nName: "+n+"\nPhone: "+p+"\nService: "+s+"\nPreferred Delivery: "+d+"\nNotes: "+no; openWhatsApp(msg); }); content.addView(send,match());
     }
 
-    private void showBooking() {
-        clearContent();
-        topBrand("Book Stitching", "Send your requirement directly to NSST on WhatsApp.");
-        EditText name = input("Your name", InputType.TYPE_CLASS_TEXT);
-        EditText phone = input("Phone number", InputType.TYPE_CLASS_PHONE);
-        EditText service = input("Service — Shirt, Pant, Suit, Kurta...", InputType.TYPE_CLASS_TEXT);
-        EditText date = input("Preferred delivery date", InputType.TYPE_CLASS_TEXT);
-        EditText note = input("Notes / fitting preference", InputType.TYPE_CLASS_TEXT);
-        String savedName = prefs.getString("profile_name", "");
-        String savedPhone = prefs.getString("profile_phone", "");
-        name.setText(savedName); phone.setText(savedPhone);
-        content.addView(name, fieldMargin());
-        content.addView(phone, fieldMargin());
-        content.addView(service, fieldMargin());
-        content.addView(date, fieldMargin());
-        content.addView(note, matchWrapMargin(0,0,0,14));
-        Button send = actionButton("Send Booking on WhatsApp", true);
-        send.setOnClickListener(v -> {
-            String n=name.getText().toString().trim(), p=phone.getText().toString().trim(), s=service.getText().toString().trim();
-            if(n.isEmpty()||p.isEmpty()||s.isEmpty()){ Toast.makeText(this,"Please fill name, phone and service.",Toast.LENGTH_SHORT).show(); return; }
-            String d=date.getText().toString().trim(), no=note.getText().toString().trim();
-            prefs.edit().putString("last_order_service", s).putString("last_order_status", "Booking Requested").putString("last_order_date", d).apply();
-            String msg="Assalamualaikum NSST, mujhe stitching booking karni hai.\n\nName: "+n+"\nPhone: "+p+"\nService: "+s+"\nPreferred Delivery: "+d+"\nNotes: "+no;
-            openWhatsApp(msg);
-        });
-        content.addView(send, matchWrap());
+    private void addOrder(String service,String delivery,String status){
+        String safeS=cleanPart(service), safeD=cleanPart(delivery), safeSt=cleanPart(status); String created=new SimpleDateFormat("dd MMM yyyy, hh:mm a",Locale.getDefault()).format(new Date()); String row=safeS+"~"+safeD+"~"+safeSt+"~"+created; String old=prefs.getString("orders",""); String next=row+(old.isEmpty()?"":"||"+old); String[] arr=next.split("\\|\\|"); if(arr.length>10){ StringBuilder sb=new StringBuilder(); for(int i=0;i<10;i++){ if(i>0)sb.append("||"); sb.append(arr[i]); } next=sb.toString(); } prefs.edit().putString("orders",next).apply();
+    }
+    private String cleanPart(String s){ return s.replace("~","-").replace("||","-"); }
+
+    private void showOrders(){
+        clear(); top("My Orders","Your saved NSST booking history on this phone."); String raw=prefs.getString("orders","");
+        if(raw.isEmpty()){ LinearLayout e=card(20); e.addView(text("No orders yet",20,true,TEXT),match()); TextView t=text("Create your first stitching booking to start order tracking.",13,false,MUTED); t.setPadding(0,dp(6),0,dp(12)); e.addView(t,match()); Button b=button("Book Now",true); b.setOnClickListener(v->showBooking()); e.addView(b,match()); content.addView(e,match()); return; }
+        String[] orders=raw.split("\\|\\|"); for(int i=0;i<orders.length;i++){ String[] f=orders[i].split("~",-1); String s=f.length>0?f[0]:"Order", d=f.length>1?f[1]:"", st=f.length>2?f[2]:"Booking Requested", created=f.length>3?f[3]:""; LinearLayout c=card(18); c.addView(text("ORDER "+(i+1),10,true,GOLD),match()); TextView title=text(s,20,true,TEXT); title.setPadding(0,dp(7),0,dp(7)); c.addView(title,match()); c.addView(label("Status",st),match()); c.addView(label("Delivery",d.isEmpty()?"Not specified":d),match()); c.addView(label("Booked",created),match()); Button ask=button("Ask Status on WhatsApp",false); ask.setOnClickListener(v->openWhatsApp("Assalamualaikum NSST, meri order status check karni hai. Service: "+s)); c.addView(ask,margin(0,dp(10),0,0)); content.addView(c,margin(0,0,0,12)); }
     }
 
-    private void showOrders() {
-        clearContent();
-        topBrand("My Orders", "Your latest stitching request and order status.");
-        String service = prefs.getString("last_order_service", "No order yet");
-        String status = prefs.getString("last_order_status", "Create a booking to start tracking");
-        String date = prefs.getString("last_order_date", "—");
-        LinearLayout c = card(20);
-        c.addView(text("LATEST ORDER", 11, true, GOLD), matchWrap());
-        TextView s = text(service, 22, true, TEXT); s.setPadding(0,dp(8),0,dp(8)); c.addView(s,matchWrap());
-        c.addView(labelValue("Status", status), matchWrap());
-        c.addView(labelValue("Delivery", date.isEmpty()?"Not specified":date), matchWrap());
-        content.addView(c, matchWrapMargin(0,0,0,16));
-        Button contact = actionButton("Ask Order Status on WhatsApp", false);
-        contact.setOnClickListener(v -> openWhatsApp("Assalamualaikum NSST, meri order status check karni hai. Service: "+service));
-        content.addView(contact, matchWrap());
+    private void showMeasurements(){
+        clear(); top("Measurements","Save key measurements for quicker future bookings."); String[] keys={"m_chest","m_waist","m_shoulder","m_sleeve","m_shirt","m_pant","m_hip","m_inseam"}; String[] hints={"Chest","Waist","Shoulder","Sleeve","Shirt length","Pant length","Hip","Inseam"}; EditText[] fields=new EditText[keys.length];
+        for(int i=0;i<keys.length;i++){ fields[i]=input(hints[i],InputType.TYPE_CLASS_NUMBER|InputType.TYPE_NUMBER_FLAG_DECIMAL); fields[i].setText(prefs.getString(keys[i],"")); content.addView(fields[i],i==keys.length-1?margin(0,0,0,14):field()); }
+        Button save=button("Save Measurements",true); save.setOnClickListener(v->{ SharedPreferences.Editor e=prefs.edit(); for(int i=0;i<keys.length;i++)e.putString(keys[i],fields[i].getText().toString()); e.apply(); Toast.makeText(this,"Measurements saved.",Toast.LENGTH_SHORT).show(); }); content.addView(save,match());
     }
 
-    private void showMeasurements() {
-        clearContent();
-        topBrand("Measurements", "Save your measurements on this phone for faster future bookings.");
-        EditText chest=input("Chest", InputType.TYPE_CLASS_NUMBER|InputType.TYPE_NUMBER_FLAG_DECIMAL);
-        EditText waist=input("Waist", InputType.TYPE_CLASS_NUMBER|InputType.TYPE_NUMBER_FLAG_DECIMAL);
-        EditText shoulder=input("Shoulder", InputType.TYPE_CLASS_NUMBER|InputType.TYPE_NUMBER_FLAG_DECIMAL);
-        EditText sleeve=input("Sleeve", InputType.TYPE_CLASS_NUMBER|InputType.TYPE_NUMBER_FLAG_DECIMAL);
-        EditText shirt=input("Shirt length", InputType.TYPE_CLASS_NUMBER|InputType.TYPE_NUMBER_FLAG_DECIMAL);
-        EditText pant=input("Pant length", InputType.TYPE_CLASS_NUMBER|InputType.TYPE_NUMBER_FLAG_DECIMAL);
-        chest.setText(prefs.getString("m_chest","")); waist.setText(prefs.getString("m_waist","")); shoulder.setText(prefs.getString("m_shoulder",""));
-        sleeve.setText(prefs.getString("m_sleeve","")); shirt.setText(prefs.getString("m_shirt","")); pant.setText(prefs.getString("m_pant",""));
-        content.addView(chest,fieldMargin()); content.addView(waist,fieldMargin()); content.addView(shoulder,fieldMargin()); content.addView(sleeve,fieldMargin()); content.addView(shirt,fieldMargin()); content.addView(pant,matchWrapMargin(0,0,0,14));
-        Button save=actionButton("Save Measurements",true);
-        save.setOnClickListener(v->{
-            prefs.edit().putString("m_chest",chest.getText().toString()).putString("m_waist",waist.getText().toString()).putString("m_shoulder",shoulder.getText().toString()).putString("m_sleeve",sleeve.getText().toString()).putString("m_shirt",shirt.getText().toString()).putString("m_pant",pant.getText().toString()).apply();
-            Toast.makeText(this,"Measurements saved on this phone.",Toast.LENGTH_SHORT).show();
-        });
-        content.addView(save,matchWrap());
-    }
+    private void showMore(){ clear(); top("More","Profile, pricing, gallery and shop tools."); content.addView(quick("My Profile","Save customer details",v->showProfile()),margin(0,0,0,10)); content.addView(quick("Price List","Service pricing overview",v->showPriceList()),margin(0,0,0,10)); content.addView(quick("Design Gallery","Browse tailoring categories",v->showGallery()),margin(0,0,0,10)); content.addView(quick("Shop / Admin","Owner tools preview",v->showAdmin()),match()); }
 
-    private void showProfile() {
-        clearContent();
-        topBrand("My Profile", "Save basic details for quicker booking.");
-        EditText name=input("Full name",InputType.TYPE_CLASS_TEXT);
-        EditText phone=input("Phone number",InputType.TYPE_CLASS_PHONE);
-        EditText city=input("City / Area",InputType.TYPE_CLASS_TEXT);
-        name.setText(prefs.getString("profile_name","")); phone.setText(prefs.getString("profile_phone","")); city.setText(prefs.getString("profile_city",""));
-        content.addView(name,fieldMargin()); content.addView(phone,fieldMargin()); content.addView(city,matchWrapMargin(0,0,0,14));
-        Button save=actionButton("Save Profile",true);
-        save.setOnClickListener(v->{ prefs.edit().putString("profile_name",name.getText().toString().trim()).putString("profile_phone",phone.getText().toString().trim()).putString("profile_city",city.getText().toString().trim()).apply(); Toast.makeText(this,"Profile saved.",Toast.LENGTH_SHORT).show(); });
-        content.addView(save,matchWrapMargin(0,0,0,18));
-        Button whatsapp=actionButton("Contact NSST on WhatsApp",false); whatsapp.setOnClickListener(v->openWhatsApp("Assalamualaikum NSST")); content.addView(whatsapp,matchWrapMargin(0,0,0,10));
-        Button call=actionButton("Call NSST",false); call.setOnClickListener(v->startActivity(new Intent(Intent.ACTION_DIAL,Uri.parse("tel:+"+PHONE)))); content.addView(call,matchWrap());
-    }
+    private void showProfile(){ clear(); top("My Profile","Save details for faster booking."); EditText name=input("Full name",InputType.TYPE_CLASS_TEXT), phone=input("Phone number",InputType.TYPE_CLASS_PHONE), city=input("City / Area",InputType.TYPE_CLASS_TEXT); name.setText(prefs.getString("profile_name","")); phone.setText(prefs.getString("profile_phone","")); city.setText(prefs.getString("profile_city","")); content.addView(name,field()); content.addView(phone,field()); content.addView(city,margin(0,0,0,14)); Button save=button("Save Profile",true); save.setOnClickListener(v->{prefs.edit().putString("profile_name",name.getText().toString().trim()).putString("profile_phone",phone.getText().toString().trim()).putString("profile_city",city.getText().toString().trim()).apply();Toast.makeText(this,"Profile saved.",Toast.LENGTH_SHORT).show();}); content.addView(save,margin(0,0,0,12)); Button wa=button("Contact NSST on WhatsApp",false); wa.setOnClickListener(v->openWhatsApp("Assalamualaikum NSST")); content.addView(wa,margin(0,0,0,10)); Button call=button("Call NSST",false); call.setOnClickListener(v->startActivity(new Intent(Intent.ACTION_DIAL,Uri.parse("tel:+"+PHONE)))); content.addView(call,match()); }
 
-    private LinearLayout quickCard(String title,String sub,View.OnClickListener click){
-        LinearLayout c=card(15); c.setOnClickListener(click); c.setClickable(true);
-        c.addView(text(title,16,true,TEXT),matchWrap()); TextView s=text(sub,12,false,MUTED); s.setPadding(0,dp(4),0,0); c.addView(s,matchWrap()); return c;
-    }
+    private void showPriceList(){ clear(); top("Price List","Current rates can be confirmed directly with NSST."); price("Shirt Stitching","Price on request"); price("Pant Stitching","Price on request"); price("Suit & Blazer","Price on request"); price("Kurta & Traditional","Price on request"); price("Alteration","Price on request"); Button ask=button("Ask Latest Prices on WhatsApp",true); ask.setOnClickListener(v->openWhatsApp("Assalamualaikum NSST, mujhe latest stitching price list chahiye.")); content.addView(ask,margin(0,10,0,0)); }
+    private void price(String name,String value){ LinearLayout c=card(16); LinearLayout r=new LinearLayout(this); r.setOrientation(LinearLayout.HORIZONTAL); TextView a=text(name,15,true,TEXT), b=text(value,13,true,GOLD); r.addView(a,new LinearLayout.LayoutParams(0,ViewGroup.LayoutParams.WRAP_CONTENT,1)); r.addView(b,new LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT,ViewGroup.LayoutParams.WRAP_CONTENT)); c.addView(r,match()); content.addView(c,margin(0,0,0,10)); }
 
-    private TextView labelValue(String label,String value){ TextView t=text(label+"  •  "+value,13,false,MUTED); t.setPadding(0,dp(4),0,dp(4)); return t; }
+    private void showGallery(){ clear(); top("Design Gallery","Browse tailoring categories and choose your next look."); gallery("Premium Shirts","Formal • Casual • Slim Fit"); gallery("Tailored Trousers","Classic • Modern • Comfort Fit"); gallery("Suit & Blazer","Wedding • Formal • Occasion"); gallery("Kurta & Traditional","Festive • Classic • Elegant"); gallery("Alteration & Refit","Resize • Length • Finishing"); Button share=button("Ask for Design Photos on WhatsApp",true); share.setOnClickListener(v->openWhatsApp("Assalamualaikum NSST, mujhe latest design photos dekhni hain.")); content.addView(share,margin(0,10,0,0)); }
+    private void gallery(String title,String sub){ LinearLayout c=card(18); TextView k=text("NSST COLLECTION",10,true,GOLD); k.setLetterSpacing(.12f); c.addView(k,match()); TextView t=text(title,18,true,TEXT); t.setPadding(0,dp(6),0,dp(4)); c.addView(t,match()); c.addView(text(sub,12,false,MUTED),match()); content.addView(c,margin(0,0,0,10)); }
 
-    private void openWhatsApp(String message) { startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("https://wa.me/"+PHONE+"?text="+Uri.encode(message)))); }
+    private void showAdmin(){ clear(); top("Shop / Admin","Owner-side tools preview for NSST."); adminCard("Orders","View customer bookings saved on this device"); adminCard("Customers","Customer database will be added with cloud sync"); adminCard("Measurements","Manage customer measurements in the future admin system"); adminCard("Order Status","Next cloud version can update Cutting, Stitching, Trial, Ready and Delivered status"); LinearLayout note=card(18); note.addView(text("CLOUD ADMIN NEXT",11,true,GOLD),match()); TextView t=text("Real admin login, live customer database and notifications need a secure online backend. This V3 keeps customer data locally on the phone.",13,false,MUTED); t.setPadding(0,dp(7),0,0); note.addView(t,match()); content.addView(note,margin(0,6,0,0)); }
+    private void adminCard(String title,String sub){ LinearLayout c=card(16); c.addView(text(title,16,true,TEXT),match()); TextView t=text(sub,12,false,MUTED); t.setPadding(0,dp(4),0,0); c.addView(t,match()); content.addView(c,margin(0,0,0,10)); }
 
-    private void section(String title,String subtitle){ content.addView(text(title,21,true,TEXT),matchWrap()); TextView s=text(subtitle,13,false,MUTED); s.setPadding(0,dp(4),0,dp(12)); content.addView(s,matchWrap()); }
-
-    private void service(String title,String desc){ LinearLayout c=card(16); c.addView(text(title,16,true,TEXT),matchWrap()); TextView d=text(desc,12,false,MUTED); d.setPadding(0,dp(5),0,0); c.addView(d,matchWrap()); content.addView(c,matchWrapMargin(0,0,0,10)); }
-
-    private LinearLayout card(int padding){ LinearLayout c=new LinearLayout(this); c.setOrientation(LinearLayout.VERTICAL); c.setPadding(dp(padding),dp(padding),dp(padding),dp(padding)); GradientDrawable bg=new GradientDrawable(); bg.setColor(CARD); bg.setCornerRadius(dp(20)); bg.setStroke(dp(1),Color.rgb(39,48,61)); c.setBackground(bg); c.setElevation(dp(2)); return c; }
-
-    private EditText input(String hint,int inputType){ EditText e=new EditText(this); e.setHint(hint); e.setHintTextColor(Color.rgb(112,124,140)); e.setTextColor(TEXT); e.setTextSize(14); e.setSingleLine(true); e.setInputType(inputType); e.setPadding(dp(16),dp(13),dp(16),dp(13)); GradientDrawable bg=new GradientDrawable(); bg.setColor(CARD2); bg.setCornerRadius(dp(14)); bg.setStroke(dp(1),Color.rgb(48,59,73)); e.setBackground(bg); return e; }
-
-    private Button actionButton(String label,boolean primary){ Button b=new Button(this); b.setText(label); b.setTextSize(14); b.setAllCaps(false); b.setTypeface(Typeface.DEFAULT_BOLD); b.setTextColor(primary?Color.rgb(20,18,12):TEXT); b.setPadding(dp(14),dp(11),dp(14),dp(11)); GradientDrawable bg=new GradientDrawable(); bg.setColor(primary?GOLD:Color.rgb(28,35,45)); bg.setCornerRadius(dp(14)); bg.setStroke(dp(1),primary?GOLD:Color.rgb(58,69,83)); b.setBackground(bg); b.setStateListAnimator(null); return b; }
-
-    private TextView text(String value,int size,boolean bold,int color){ TextView t=new TextView(this); t.setText(value); t.setTextSize(size); t.setTextColor(color); if(bold)t.setTypeface(Typeface.DEFAULT_BOLD); return t; }
-    private LinearLayout.LayoutParams matchWrap(){ return new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,ViewGroup.LayoutParams.WRAP_CONTENT); }
-    private LinearLayout.LayoutParams matchWrapMargin(int l,int t,int r,int b){ LinearLayout.LayoutParams p=matchWrap(); p.setMargins(dp(l),dp(t),dp(r),dp(b)); return p; }
-    private LinearLayout.LayoutParams weightMargin(float weight,int l,int t,int r,int b){ LinearLayout.LayoutParams p=new LinearLayout.LayoutParams(0,ViewGroup.LayoutParams.WRAP_CONTENT,weight); p.setMargins(dp(l),dp(t),dp(r),dp(b)); return p; }
-    private LinearLayout.LayoutParams fieldMargin(){ return matchWrapMargin(0,0,0,10); }
-    private int dp(int value){ return Math.round(value*getResources().getDisplayMetrics().density); }
+    private LinearLayout quick(String title,String sub,View.OnClickListener l){ LinearLayout c=card(15); c.setOnClickListener(l); c.setClickable(true); c.addView(text(title,16,true,TEXT),match()); TextView s=text(sub,12,false,MUTED); s.setPadding(0,dp(4),0,0); c.addView(s,match()); return c; }
+    private TextView label(String a,String b){ TextView t=text(a+"  •  "+b,12,false,MUTED); t.setPadding(0,dp(3),0,dp(3)); return t; }
+    private void openWhatsApp(String m){ startActivity(new Intent(Intent.ACTION_VIEW,Uri.parse("https://wa.me/"+PHONE+"?text="+Uri.encode(m)))); }
+    private void section(String t,String s){ content.addView(text(t,21,true,TEXT),match()); TextView x=text(s,13,false,MUTED); x.setPadding(0,dp(4),0,dp(12)); content.addView(x,match()); }
+    private void service(String t,String d){ LinearLayout c=card(16); c.addView(text(t,16,true,TEXT),match()); TextView x=text(d,12,false,MUTED); x.setPadding(0,dp(5),0,0); c.addView(x,match()); content.addView(c,margin(0,0,0,10)); }
+    private LinearLayout card(int p){ LinearLayout c=new LinearLayout(this); c.setOrientation(LinearLayout.VERTICAL); c.setPadding(dp(p),dp(p),dp(p),dp(p)); GradientDrawable g=new GradientDrawable(); g.setColor(CARD); g.setCornerRadius(dp(20)); g.setStroke(dp(1),Color.rgb(39,48,61)); c.setBackground(g); c.setElevation(dp(2)); return c; }
+    private EditText input(String h,int type){ EditText e=new EditText(this); e.setHint(h); e.setHintTextColor(Color.rgb(112,124,140)); e.setTextColor(TEXT); e.setTextSize(14); e.setSingleLine(true); e.setInputType(type); e.setPadding(dp(16),dp(13),dp(16),dp(13)); GradientDrawable g=new GradientDrawable(); g.setColor(CARD2); g.setCornerRadius(dp(14)); g.setStroke(dp(1),Color.rgb(48,59,73)); e.setBackground(g); return e; }
+    private Button button(String l,boolean primary){ Button b=new Button(this); b.setText(l); b.setTextSize(14); b.setAllCaps(false); b.setTypeface(Typeface.DEFAULT_BOLD); b.setTextColor(primary?Color.rgb(20,18,12):TEXT); b.setPadding(dp(14),dp(11),dp(14),dp(11)); GradientDrawable g=new GradientDrawable(); g.setColor(primary?GOLD:Color.rgb(28,35,45)); g.setCornerRadius(dp(14)); g.setStroke(dp(1),primary?GOLD:Color.rgb(58,69,83)); b.setBackground(g); b.setStateListAnimator(null); return b; }
+    private TextView text(String v,int s,boolean bold,int c){ TextView t=new TextView(this); t.setText(v); t.setTextSize(s); t.setTextColor(c); if(bold)t.setTypeface(Typeface.DEFAULT_BOLD); return t; }
+    private LinearLayout.LayoutParams match(){ return new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,ViewGroup.LayoutParams.WRAP_CONTENT); }
+    private LinearLayout.LayoutParams margin(int l,int t,int r,int b){ LinearLayout.LayoutParams p=match(); p.setMargins(dp(l),dp(t),dp(r),dp(b)); return p; }
+    private LinearLayout.LayoutParams weight(float w,int l,int t,int r,int b){ LinearLayout.LayoutParams p=new LinearLayout.LayoutParams(0,ViewGroup.LayoutParams.WRAP_CONTENT,w); p.setMargins(dp(l),dp(t),dp(r),dp(b)); return p; }
+    private LinearLayout.LayoutParams field(){ return margin(0,0,0,10); }
+    private int dp(int v){ return Math.round(v*getResources().getDisplayMetrics().density); }
 }
