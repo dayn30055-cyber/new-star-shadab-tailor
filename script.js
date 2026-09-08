@@ -140,7 +140,7 @@ appointmentForm.addEventListener("submit", event => {
 (() => {
   const css = document.createElement("link");
   css.rel = "stylesheet";
-  css.href = "customer-tools.css?v=1";
+  css.href = "customer-tools.css?v=2";
   document.head.appendChild(css);
 
   const toolsNav = document.createElement("a");
@@ -208,6 +208,48 @@ appointmentForm.addEventListener("submit", event => {
     <div class="tools-book-strip"><div><strong>Need a fitting or consultation?</strong><span>Choose a convenient time and send an appointment request.</span></div><a class="tool-action primary" href="#appointment">📅 Book Appointment</a></div>
   `;
   appointmentSection.parentNode.insertBefore(section, appointmentSection);
+
+  // Preferred homepage flow:
+  // Hero -> Services -> Contact actions -> Customer tools -> Appointment -> remaining sections.
+  const homeSection = document.getElementById("home");
+  const servicesSection = document.getElementById("services");
+  const trustSection = document.querySelector("main > .trust");
+  const originalActions = homeSection?.querySelector(".hero-actions-block");
+  if (homeSection && servicesSection) {
+    homeSection.insertAdjacentElement("afterend", servicesSection);
+  }
+  let actionHub = null;
+  if (originalActions && servicesSection) {
+    actionHub = document.createElement("section");
+    actionHub.id = "quick-actions";
+    actionHub.className = "section quick-actions-section";
+    actionHub.innerHTML = `<div class="heading"><p class="eyebrow">CONTACT & QUICK OPTIONS</p><h2>Connect With New Star Shadab Tailor</h2><p>Call, WhatsApp, get directions or book your visit.</p></div>`;
+    const clonedActions = originalActions.cloneNode(true);
+    clonedActions.classList.add("quick-actions-card");
+    actionHub.appendChild(clonedActions);
+    originalActions.remove();
+    servicesSection.insertAdjacentElement("afterend", actionHub);
+
+    const orderStyle = document.createElement("style");
+    orderStyle.textContent = `
+      .quick-actions-section{background:radial-gradient(circle at 50% 0,rgba(216,179,101,.08),transparent 38%),#0b0c0f}
+      .quick-actions-card{max-width:1050px;margin:28px auto 0;padding:28px;border:1px solid rgba(216,179,101,.24);border-radius:24px;background:linear-gradient(155deg,rgba(23,25,30,.98),rgba(10,11,14,.98));box-shadow:0 18px 50px rgba(0,0,0,.28)}
+      .quick-actions-card .actions{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:12px}
+      .quick-actions-card .actions .btn,.quick-actions-card .quick>a,.quick-actions-card .quick>span{background:linear-gradient(135deg,#d8bd76,#c79d47)!important;color:#17130c!important;border:1px solid #d5b35f!important;font-weight:900!important;text-shadow:none!important;box-shadow:0 5px 14px rgba(185,139,39,.12),inset 0 1px 0 rgba(255,255,255,.2)!important}
+      .quick-actions-card .quick{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:14px}
+      .quick-actions-card .quick>a,.quick-actions-card .quick>span{min-height:52px;border-radius:14px;display:flex;align-items:center;justify-content:center;padding:12px 16px;text-align:center;text-decoration:none}
+      .quick-actions-card .map-location{gap:8px}
+      .quick-actions-card .map-location span,.quick-actions-card .map-location .map-arrow{color:#17130c!important;font-weight:900!important}
+      @media(max-width:820px){.quick-actions-card{padding:18px}.quick-actions-card .actions{grid-template-columns:1fr 1fr}.quick-actions-card .quick{grid-template-columns:1fr}}
+      @media(max-width:520px){.quick-actions-card .actions{grid-template-columns:1fr}}
+    `;
+    document.head.appendChild(orderStyle);
+  }
+  const quickAnchor = actionHub || servicesSection;
+  if (trustSection && quickAnchor) quickAnchor.insertAdjacentElement("afterend", trustSection);
+  const toolsAnchor = trustSection || quickAnchor;
+  if (toolsAnchor) toolsAnchor.insertAdjacentElement("afterend", section);
+  section.insertAdjacentElement("afterend", appointmentSection);
 
   const tabs = section.querySelectorAll(".tool-tab");
   const panels = section.querySelectorAll(".tool-panel");
