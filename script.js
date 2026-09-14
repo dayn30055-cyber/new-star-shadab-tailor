@@ -46,3 +46,13 @@ if(appointmentForm)appointmentForm.addEventListener('submit',e=>{e.preventDefaul
   // Desired homepage order: Hero -> Services -> Quick actions -> Measurements/Upload -> Appointment.
   const home=document.getElementById('home'),services=document.getElementById('services'),trust=document.querySelector('main > .trust'),originalActions=home?.querySelector('.hero-actions-block');if(home&&services)home.insertAdjacentElement('afterend',services);let actionHub=null;if(originalActions&&services){actionHub=document.createElement('section');actionHub.id='quick-actions';actionHub.className='section quick-actions-section';actionHub.innerHTML='<div class="heading"><p class="eyebrow">CONTACT & QUICK OPTIONS</p><h2>Call, WhatsApp or Visit Us</h2><p>Choose the option you need.</p></div>';const clone=originalActions.cloneNode(true);clone.classList.add('quick-actions-card');actionHub.appendChild(clone);originalActions.remove();services.insertAdjacentElement('afterend',actionHub);const st=document.createElement('style');st.textContent='.quick-actions-section{background:#0b0c0f}.quick-actions-card{max-width:1050px;margin:28px auto 0;padding:24px;border:1px solid rgba(216,179,101,.24);border-radius:24px;background:linear-gradient(155deg,rgba(23,25,30,.98),rgba(10,11,14,.98))}.quick-actions-card .actions{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:12px}.quick-actions-card .quick{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:14px}@media(max-width:820px){.quick-actions-card .actions{grid-template-columns:1fr 1fr}.quick-actions-card .quick{grid-template-columns:1fr}}@media(max-width:520px){.quick-actions-card .actions{grid-template-columns:1fr}}';document.head.appendChild(st);}const quick=actionHub||services;if(trust&&quick)quick.insertAdjacentElement('afterend',trust);const toolsAnchor=trust||quick;if(toolsAnchor)toolsAnchor.insertAdjacentElement('afterend',section);section.insertAdjacentElement('afterend',appointmentSection);
 })();
+
+/* NSST smart tailoring loader */
+(function(){
+  if(!document.querySelector('link[href*="smart-tailoring.css"]')){
+    var l=document.createElement('link'); l.rel='stylesheet'; l.href='smart-tailoring.css?v=20260915-1'; document.head.appendChild(l);
+  }
+  if(!document.querySelector('script[src*="smart-tailoring.js"]')){
+    var s=document.createElement('script'); s.src='smart-tailoring.js?v=20260915-1'; s.defer=true; document.body.appendChild(s);
+  }
+})();
